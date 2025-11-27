@@ -22,7 +22,7 @@ A comprehensive daily check-in and journaling system designed to help individual
 ### Running the Application
 
 ```bash
-cd "C:\Users\lafay\Desktop\Projects\Vibe Coding Projects\CSharpWellnessJournal"
+cd "[insert project source folder path here]"
 dotnet restore
 dotnet run
 ```
