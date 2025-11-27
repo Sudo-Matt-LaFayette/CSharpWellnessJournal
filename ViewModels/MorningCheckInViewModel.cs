@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DailyCheckInJournal.Models;
@@ -70,6 +73,20 @@ namespace DailyCheckInJournal.ViewModels
         }
 
         public ObservableCollection<Habit> AvailableHabits { get; } = new();
+
+        private string? _successMessage;
+        public string? SuccessMessage
+        {
+            get => _successMessage;
+            set => SetProperty(ref _successMessage, value);
+        }
+
+        private bool _showSuccessMessage;
+        public bool ShowSuccessMessage
+        {
+            get => _showSuccessMessage;
+            set => SetProperty(ref _showSuccessMessage, value);
+        }
 
         public ICommand SaveCommand { get; }
         public ICommand AddMedicationCommand { get; }
@@ -173,6 +190,23 @@ namespace DailyCheckInJournal.ViewModels
             };
 
             await _dataService.SaveCheckInAsync(checkIn);
+            
+            // Show encouraging success message
+            SuccessMessage = "✨ Great job! Your morning check-in has been saved. You're taking care of yourself, and that matters! 🌟";
+            ShowSuccessMessage = true;
+            
+            // Clear the message after 5 seconds
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(5)
+            };
+            timer.Tick += (s, e) =>
+            {
+                ShowSuccessMessage = false;
+                SuccessMessage = null;
+                timer.Stop();
+            };
+            timer.Start();
         }
     }
 }
