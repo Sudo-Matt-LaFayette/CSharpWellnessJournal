@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DailyCheckInJournal.Models;
@@ -57,6 +58,20 @@ namespace DailyCheckInJournal.ViewModels
 
         public ObservableCollection<Habit> AvailableHabits { get; } = new();
         public ObservableCollection<string> MistakeCategories { get; } = new();
+
+        private string? _successMessage;
+        public string? SuccessMessage
+        {
+            get => _successMessage;
+            set => SetProperty(ref _successMessage, value);
+        }
+
+        private bool _showSuccessMessage;
+        public bool ShowSuccessMessage
+        {
+            get => _showSuccessMessage;
+            set => SetProperty(ref _showSuccessMessage, value);
+        }
 
         private string? _mustDoFromMorning;
         public string? MustDoFromMorning
@@ -176,6 +191,23 @@ namespace DailyCheckInJournal.ViewModels
             };
 
             await _dataService.SaveCheckInAsync(checkIn);
+            
+            // Show encouraging success message
+            SuccessMessage = "💙 Well done! Your evening check-in has been saved. Reflecting on your day is a powerful act of self-care. Keep going! 🌙";
+            ShowSuccessMessage = true;
+            
+            // Clear the message after 5 seconds
+            var timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(5)
+            };
+            timer.Tick += (s, e) =>
+            {
+                ShowSuccessMessage = false;
+                SuccessMessage = null;
+                timer.Stop();
+            };
+            timer.Start();
         }
     }
 }
