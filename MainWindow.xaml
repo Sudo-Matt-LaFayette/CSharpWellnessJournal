@@ -1,0 +1,35 @@
+<Window x:Class="DailyCheckInJournal.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Daily Check-In Journal" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Navigation Menu -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryBrush}" Padding="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Morning Check-In" Command="{Binding NavigateToMorningCheckInCommand}" 
+                        Style="{StaticResource NavButtonStyle}" Margin="5"/>
+                <Button Content="Evening Check-In" Command="{Binding NavigateToEveningCheckInCommand}" 
+                        Style="{StaticResource NavButtonStyle}" Margin="5"/>
+                <Button Content="Weekly Review" Command="{Binding NavigateToWeeklyReviewCommand}" 
+                        Style="{StaticResource NavButtonStyle}" Margin="5"/>
+                <Button Content="Visualizations" Command="{Binding NavigateToVisualizationCommand}" 
+                        Style="{StaticResource NavButtonStyle}" Margin="5"/>
+                <Button Content="Settings" Command="{Binding NavigateToSettingsCommand}" 
+                        Style="{StaticResource NavButtonStyle}" Margin="5"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content Area -->
+        <ContentControl Grid.Row="1" Content="{Binding CurrentView}" Margin="10"/>
+    </Grid>
+</Window>
+
