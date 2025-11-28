@@ -16,6 +16,8 @@
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:BoolToRadioConverter x:Key="BoolToRadioConverter"/>
             <converters:NullToRadioConverter x:Key="NullToRadioConverter"/>
+            <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+            <converters:CollectionToVisibilityConverter x:Key="CollectionToVisibilityConverter"/>
             <converters:DateTimeToDateConverter x:Key="DateTimeToDateConverter"/>
             
             <!-- ViewModel to View DataTemplates -->
@@ -33,6 +35,12 @@
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
                 <views:SettingsView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:CalendarViewModel}">
+                <views:CalendarView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModels:DayViewViewModel}">
+                <views:DayView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

@@ -55,6 +55,13 @@ This approach ensures each layer is solid before building on top of it, resultin
 - Mistake frequency analysis
 - Active pattern displays
 
+### Calendar & Day View
+- Calendar interface to browse previous days
+- Visual indication of dates with check-ins
+- Quick preview of selected day's check-in summary
+- Full day view showing complete morning and evening check-in details
+- Read-only view for reviewing historical entries
+
 ### Additional Features
 - **Pattern Detection**: Automatically identifies patterns in energy, mood, sleep, mistakes, and overcommitment
 - **Notifications**: System notifications and in-app reminders for morning and evening check-ins

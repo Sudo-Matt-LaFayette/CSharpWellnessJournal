@@ -23,6 +23,8 @@
                         Style="{StaticResource NavButtonStyle}" Margin="5"/>
                 <Button Content="Visualizations" Command="{Binding NavigateToVisualizationCommand}" 
                         Style="{StaticResource NavButtonStyle}" Margin="5"/>
+                <Button Content="View Days" Command="{Binding NavigateToCalendarCommand}" 
+                        Style="{StaticResource NavButtonStyle}" Margin="5"/>
                 <Button Content="Settings" Command="{Binding NavigateToSettingsCommand}" 
                         Style="{StaticResource NavButtonStyle}" Margin="5"/>
             </StackPanel>

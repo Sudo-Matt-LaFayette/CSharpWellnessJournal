@@ -1,0 +1,288 @@
+<UserControl x:Class="DailyCheckInJournal.Views.DayView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <TextBlock FontSize="24" FontWeight="Bold" Margin="0,0,0,10">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat="Check-In Details - {0:MMMM dd, yyyy}">
+                        <Binding Path="ViewDate"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+
+            <!-- No Check-In Message -->
+            <TextBlock Text="No check-in found for this date." 
+                       FontSize="16" 
+                       Foreground="Gray"
+                       Margin="0,20,0,0"
+                       Visibility="{Binding CheckIn, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+            <!-- Morning Check-In Section -->
+            <GroupBox Header="Morning Check-In" Margin="0,0,0,15" 
+                      Visibility="{Binding HasMorningCheckIn, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel Margin="10">
+                    <TextBlock Text="{Binding MorningEnergyLevel, StringFormat='Energy Level: {0}/10'}" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding MorningMustDoToday, StringFormat='Must Do: {0}'}" Margin="0,0,0,5" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding MorningCapacityFeeling, StringFormat='Capacity Feeling: {0}/10'}" Margin="0,0,0,5"/>
+                    
+                    <!-- Sleep Quality -->
+                    <GroupBox Header="Sleep Quality" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningSleepQuality, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding MorningSleepQuality.Quality, StringFormat='Quality: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding MorningSleepQuality.HoursSlept, StringFormat='Hours Slept: {0}'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="Restless Sleep" Margin="0,0,0,5" 
+                                       Visibility="{Binding MorningSleepQuality.Restless, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="{Binding MorningSleepQuality.Notes}" TextWrapping="Wrap" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Medications -->
+                    <GroupBox Header="Medications" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningMedications, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding MorningMedications}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Name, StringFormat='Name: {0}'}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding TimeTaken, StringFormat='Time Taken: {0:g}'}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Dosage, StringFormat='Dosage: {0}'}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Notes}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Sensory State -->
+                    <GroupBox Header="Sensory State" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningSensoryState, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding MorningSensoryState.OverloadLevel, StringFormat='Overload Level: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding MorningSensoryState.Triggers, Converter={StaticResource ListToStringConverter}, StringFormat='Triggers: {0}'}" 
+                                       TextWrapping="Wrap" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding MorningSensoryState.Notes}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Executive Function -->
+                    <GroupBox Header="Executive Function" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningExecutiveFunction, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding MorningExecutiveFunction.TaskInitiationDifficulty, StringFormat='Task Initiation Difficulty: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding MorningExecutiveFunction.TransitionDifficulty, StringFormat='Transition Difficulty: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="Time Blindness" Margin="0,0,0,5" 
+                                       Visibility="{Binding MorningExecutiveFunction.TimeBlindness, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="Hyperfocus Period" Margin="0,0,0,5" 
+                                       Visibility="{Binding MorningExecutiveFunction.HyperfocusPeriod, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="{Binding MorningExecutiveFunction.Notes}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Emotional State -->
+                    <GroupBox Header="Emotional State" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningEmotionalState, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding MorningEmotionalState.OverallMood, StringFormat='Overall Mood: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding MorningEmotionalState.OverwhelmLevel, StringFormat='Overwhelm Level: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="Meltdown" Margin="0,0,0,5" 
+                                       Visibility="{Binding MorningEmotionalState.Meltdown, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="Shutdown" Margin="0,0,0,5" 
+                                       Visibility="{Binding MorningEmotionalState.Shutdown, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="{Binding MorningEmotionalState.Notes}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Habits -->
+                    <GroupBox Header="Habits" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningHabitEntries, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding MorningHabitEntries}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding HabitName}" IsChecked="{Binding Completed}" IsEnabled="False" Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Gratitude -->
+                    <GroupBox Header="Gratitude / Positives" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningGratitudeItems, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding MorningGratitudeItems}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .}" Margin="0,2" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Triggers -->
+                    <GroupBox Header="Triggers" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningTriggers, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding MorningTriggers}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Description, StringFormat='Description: {0}'}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Category, StringFormat='Category: {0}'}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Notes}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Coping Strategies -->
+                    <GroupBox Header="Coping Strategies" Margin="0,10,0,5" 
+                              Visibility="{Binding MorningCopingStrategies, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding MorningCopingStrategies}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Strategy, StringFormat='Strategy: {0}'}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Effective" Margin="0,0,0,5" 
+                                                       Visibility="{Binding Effective, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <TextBlock Text="{Binding Notes}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <TextBlock Text="{Binding MorningCheckInTime, StringFormat='Checked in at: {0:g}'}" 
+                               FontStyle="Italic" 
+                               Foreground="Gray" 
+                               Margin="0,10,0,0"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Evening Check-In Section -->
+            <GroupBox Header="Evening Check-In" Margin="0,0,0,15" 
+                      Visibility="{Binding HasEveningCheckIn, Converter={StaticResource BoolToVisibilityConverter}}">
+                <StackPanel Margin="10">
+                    <TextBlock Text="{Binding EveningEnergyLevel, StringFormat='Energy Level: {0}/10'}" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding EveningMustDoCompleted, StringFormat='Must Do Completed: {0}'}" Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding EveningOvercommitted, StringFormat='Overcommitted: {0}'}" Margin="0,0,0,5"/>
+
+                    <!-- Common Mistakes -->
+                    <GroupBox Header="Common Mistakes" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningCommonMistakes, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding EveningCommonMistakes}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Category, StringFormat='Category: {0}'}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Tags, Converter={StaticResource ListToStringConverter}, StringFormat='Tags: {0}'}" 
+                                                       TextWrapping="Wrap" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding FreeTextNotes}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Emotional State -->
+                    <GroupBox Header="Emotional State" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningEmotionalState, Converter={StaticResource NullToVisibilityConverter}}">
+                        <StackPanel Margin="10">
+                            <TextBlock Text="{Binding EveningEmotionalState.OverallMood, StringFormat='Overall Mood: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding EveningEmotionalState.OverwhelmLevel, StringFormat='Overwhelm Level: {0}/10'}" Margin="0,0,0,5"/>
+                            <TextBlock Text="Meltdown" Margin="0,0,0,5" 
+                                       Visibility="{Binding EveningEmotionalState.Meltdown, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="Shutdown" Margin="0,0,0,5" 
+                                       Visibility="{Binding EveningEmotionalState.Shutdown, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBlock Text="{Binding EveningEmotionalState.Notes}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Habits -->
+                    <GroupBox Header="Habits" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningHabitEntries, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding EveningHabitEntries}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding HabitName}" IsChecked="{Binding Completed}" IsEnabled="False" Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Gratitude -->
+                    <GroupBox Header="Gratitude / Positives" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningGratitudeItems, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding EveningGratitudeItems}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding .}" Margin="0,2" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Triggers -->
+                    <GroupBox Header="Triggers" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningTriggers, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding EveningTriggers}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Description, StringFormat='Description: {0}'}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Category, StringFormat='Category: {0}'}" Margin="0,0,0,5"/>
+                                            <TextBlock Text="{Binding Notes}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Coping Strategies -->
+                    <GroupBox Header="Coping Strategies" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningCopingStrategies, Converter={StaticResource CollectionToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding EveningCopingStrategies}" Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Strategy, StringFormat='Strategy: {0}'}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                            <TextBlock Text="Effective" Margin="0,0,0,5" 
+                                                       Visibility="{Binding Effective, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            <TextBlock Text="{Binding Notes}" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- Notes -->
+                    <GroupBox Header="Notes" Margin="0,10,0,5" 
+                              Visibility="{Binding EveningNotes, Converter={StaticResource NullToVisibilityConverter}}">
+                        <TextBlock Text="{Binding EveningNotes}" TextWrapping="Wrap" Margin="10"/>
+                    </GroupBox>
+
+                    <TextBlock Text="{Binding EveningCheckInTime, StringFormat='Checked in at: {0:g}'}" 
+                               FontStyle="Italic" 
+                               Foreground="Gray" 
+                               Margin="0,10,0,0"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
+
