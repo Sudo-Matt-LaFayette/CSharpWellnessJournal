@@ -7,6 +7,7 @@ A comprehensive daily check-in and journaling system designed to help individual
 - **Morning & Evening Check-Ins**: Track energy levels, mood, sleep, habits, and more
 - **Weekly Reviews**: Comprehensive statistics and pattern analysis
 - **Data Visualizations**: Charts and graphs to visualize trends over time
+- **Calendar & Day View**: Browse previous days and view complete check-in history
 - **Pattern Detection**: Automatically identifies patterns in your data
 - **Notifications**: Reminders for morning and evening check-ins
 - **Customizable Themes**: Six themes including accessibility options
