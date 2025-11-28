@@ -88,6 +88,8 @@ namespace DailyCheckInJournal
                         sp.GetRequiredService<WeeklyReviewViewModel>(),
                         sp.GetRequiredService<VisualizationViewModel>(),
                         sp.GetRequiredService<SettingsViewModel>(),
+                        sp.GetRequiredService<CalendarViewModel>(),
+                        sp.GetRequiredService<DayViewViewModel>(),
                         logger);
                 });
                 services.AddTransient<MorningCheckInViewModel>();
@@ -95,6 +97,8 @@ namespace DailyCheckInJournal
                 services.AddTransient<WeeklyReviewViewModel>();
                 services.AddTransient<VisualizationViewModel>();
                 services.AddTransient<SettingsViewModel>();
+                services.AddTransient<DayViewViewModel>();
+                services.AddTransient<CalendarViewModel>();
 
                 // Views
                 _logger?.LogDebug("Registering Views...");

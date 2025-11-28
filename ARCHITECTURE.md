@@ -115,6 +115,20 @@ ViewModels coordinate between the views and services. I used the MVVM pattern be
 - Integrates with Google Drive service for authentication
 - Saves settings and immediately applies changes (like theme switching)
 
+**CalendarViewModel.cs**:
+- Manages calendar display and date selection
+- Loads all check-in dates to highlight days with entries
+- Provides date selection functionality with automatic check-in loading
+- Emits events when users request to view full day details
+- Integrates with MainViewModel for navigation to DayView
+
+**DayViewViewModel.cs**:
+- Displays a selected day's check-in in read-only mode
+- Separates morning and evening check-in data for clear presentation
+- Loads all check-in details including medications, habits, triggers, coping strategies, etc.
+- Uses ObservableCollections for dynamic UI updates
+- Designed for viewing historical data without editing capabilities
+
 **Design Decision**: I used CommunityToolkit.Mvvm for the ViewModels. This library provides:
 - `ObservableObject` base class with automatic property change notifications
 - `RelayCommand` and `AsyncRelayCommand` for command implementation
@@ -135,6 +149,20 @@ Views are pure XAML with minimal code-behind. I kept code-behind to just `Initia
 - ScrollViewers wrap all views to handle content overflow gracefully
 - Consistent spacing using Margin properties (I considered using a Spacing property but stuck with Margin for broader compatibility)
 
+**CalendarView.xaml**:
+- Uses WPF's built-in Calendar control for date selection
+- Displays a preview of selected day's check-in summary
+- Shows morning and evening check-in highlights
+- Provides "View Full Details" button to navigate to complete day view
+- Refresh button to reload check-in dates
+
+**DayView.xaml**:
+- Read-only view for displaying complete check-in details
+- Separates morning and evening sections for clarity
+- Uses TextBlocks instead of TextBoxes to prevent editing
+- Displays all check-in data including medications, habits, triggers, coping strategies, etc.
+- Uses CollectionToVisibilityConverter to show/hide sections based on data availability
+
 **Design Decision**: I removed the `PlaceholderText` attributes from TextBoxes because WPF doesn't natively support placeholders. While I could have created a custom control, I prioritized getting the core functionality working first. This is a good candidate for future enhancement.
 
 ### Converters
@@ -146,6 +174,8 @@ I created several value converters to handle data transformation between ViewMod
 - **BoolToRadioConverter**: Handles three-state radio buttons (Yes/No/N/A) for nullable booleans
 - **NullToRadioConverter**: Specifically for the N/A option in radio button groups
 - **DateTimeToDateConverter**: Converts DateTime to Date for DatePicker controls
+- **NullToBoolConverter**: Converts null values to boolean for enabling/disabling UI elements
+- **CollectionToVisibilityConverter**: Shows/hides UI elements based on whether collections have items
 
 **Design Decision**: Converters are registered in App.xaml as resources, making them available application-wide. This follows the DRY principle.
 

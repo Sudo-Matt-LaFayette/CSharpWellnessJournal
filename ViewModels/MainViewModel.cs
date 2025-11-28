@@ -25,12 +25,15 @@ namespace DailyCheckInJournal.ViewModels
         public ICommand NavigateToWeeklyReviewCommand { get; }
         public ICommand NavigateToVisualizationCommand { get; }
         public ICommand NavigateToSettingsCommand { get; }
+        public ICommand NavigateToCalendarCommand { get; }
 
         private readonly MorningCheckInViewModel _morningCheckInViewModel;
         private readonly EveningCheckInViewModel _eveningCheckInViewModel;
         private readonly WeeklyReviewViewModel _weeklyReviewViewModel;
         private readonly VisualizationViewModel _visualizationViewModel;
         private readonly SettingsViewModel _settingsViewModel;
+        private readonly CalendarViewModel _calendarViewModel;
+        private readonly DayViewViewModel _dayViewViewModel;
 
         public MainViewModel(
             IDataService dataService,
@@ -41,6 +44,8 @@ namespace DailyCheckInJournal.ViewModels
             WeeklyReviewViewModel weeklyReviewViewModel,
             VisualizationViewModel visualizationViewModel,
             SettingsViewModel settingsViewModel,
+            CalendarViewModel calendarViewModel,
+            DayViewViewModel dayViewViewModel,
             ILoggerService? logger = null)
         {
             try
@@ -56,6 +61,8 @@ namespace DailyCheckInJournal.ViewModels
                 _weeklyReviewViewModel = weeklyReviewViewModel;
                 _visualizationViewModel = visualizationViewModel;
                 _settingsViewModel = settingsViewModel;
+                _calendarViewModel = calendarViewModel;
+                _dayViewViewModel = dayViewViewModel;
 
                 _logger?.LogDebug("Creating navigation commands...");
                 NavigateToMorningCheckInCommand = new RelayCommand(() => 
@@ -83,6 +90,19 @@ namespace DailyCheckInJournal.ViewModels
                     _logger?.LogDebug("Navigating to Settings");
                     CurrentView = _settingsViewModel;
                 });
+                NavigateToCalendarCommand = new RelayCommand(() => 
+                {
+                    _logger?.LogDebug("Navigating to Calendar");
+                    CurrentView = _calendarViewModel;
+                });
+
+                // Subscribe to calendar's view day request
+                _calendarViewModel.ViewDayRequested += (checkIn) =>
+                {
+                    _logger?.LogDebug($"Navigating to day view for {checkIn.Date:yyyy-MM-dd}");
+                    _dayViewViewModel.CheckIn = checkIn;
+                    CurrentView = _dayViewViewModel;
+                };
 
                 // Default to morning check-in
                 _logger?.LogDebug("Setting default view to Morning Check-In");
